@@ -12,6 +12,7 @@ displayed by streamlit app.
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
+import re
 
 # list of cities to scrape
 cities = [
@@ -72,6 +73,7 @@ def parse_description(soup):
         text = p.get_text().strip()
         # only return it if its a real sentance
         if len(text) > 30:
+            text = re.sub(r'\[.*?\]', '', text)  # clear all of the brackets thst are interspersed in the paragraph
             return text
     return "No description available"
 
@@ -81,9 +83,15 @@ def parse_population(soup):
     infobox = soup.find("table", class_="infobox")  # beautiful soup knows where to find it
     if not infobox:
         return None
-    for row in infobox.find_all("tr"):  # go thru all table row
+    rows = infobox.find_all("tr")
+    for i, row in enumerate(rows):  # need the position so could go to next row for actual number
         if "Population" in row.get_text():
-            return row.get_text(strip=True)
+            if i + 1< len(rows):
+                next_row = rows[i +1].get_text(strip=True)
+                next_row = re.sub(r'\[.*?\]', '', next_row)
+                numbers = re.findall(r'[\d,]+', next_row)  # return everuthing found and make return the population num
+                next_row = numbers[0] if numbers else next_row   # if first num is found return it, else use the next row
+                return next_row
     return None
 
 # parse teh landmarks
@@ -92,7 +100,7 @@ def parse_landmarks(soup):
     headers = soup.find_all(["h2", "h3"])  # collect the major sections and the subsections
     for header in headers:
         title = header.get_text().lower()
-        if "landmark" in title or "tourism" in title or "attractions" in title:  # filter
+        if any(word in title for word in ["landmark", "tourism", "attractions", "sights", "points of interest", "culture", "arts", "cuisine"]):  # filter
             ul = header.find_next("ul")  # the ul comes after the header (ie unordered list under attractions)
             if ul:
                 for li in ul.find_all("li"):  # the li tags are the ones before and after the attraction

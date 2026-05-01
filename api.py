@@ -9,7 +9,7 @@ import requests
 # function to fetch the weather for parameter city
 def fetch_weather(city):
     api_key = st.secrets["OPENWEATHER_API_KEY"]  # reads key from secrets file
-    url = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=metric"
+    url = f"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={api_key}&units=imperial"
     response = requests.get(url)
     response.raise_for_status()
     return response.json()

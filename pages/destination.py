@@ -12,6 +12,9 @@ import plotly.express as px
 import pandas as pd
 from ai import get_response
 
+# config the page to wide margins
+st.set_page_config(layout="wide")
+
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")

@@ -51,7 +51,7 @@ This app uses Azure OpenAI (GPT) for two features:
 2. Destination Page Chatbot — answers specific questions about the chosen city including things to do, eat, and see
 The AI is accessed via the OpenAI Python library using Azure credentials stored securely in Streamlit's secrets manager. Users interact with the AI through a chat interface built with Streamlit's st.chat_input and st.chat_message components.
 
-## Testing
+## 🧪 Testing
 Run the test suite:
 pytest tests/
 Run with coverage report:

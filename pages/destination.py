@@ -61,6 +61,9 @@ with col2:
     fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
     st.plotly_chart(fig)  # display the chart
 
+# add flight links to destinations
+st.markdown(f"[✈️ Search Flights to {city}](https://www.google.com/travel/flights/search?q=flights+to+{city.replace(' ', '+')})")
+
 # ai chatbot about destination
 st.subheader("Ask Our Travel AI Chatbot")
 get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",

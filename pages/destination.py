@@ -30,8 +30,9 @@ st.subheader("Population")
 st.write(city_info[3])  # population
 # display landmarks
 st.subheader("Landmarks and Attractions")
-if landmark in landmarks:
-    st.write(f"• {landmark[0]}")
+if landmarks:
+    for landmark in landmarks:
+        st.write(f"• {landmark[0]}")
 else:
     st.info("No landmarks data available for this city.")
 

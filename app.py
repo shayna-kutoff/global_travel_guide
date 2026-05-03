@@ -13,7 +13,7 @@ import folium
 from streamlit_folium import st_folium
 
 # get rid of sidebar
-st.set_page_config(initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Global Travel Guide", page_icon="🌍", initial_sidebar_state="collapsed")
 
 # coordinates for all destinations so they could appear on the map
 city_coordinates = {
@@ -39,8 +39,9 @@ city_coordinates = {
 "Rio de Janeiro": (-22.9068, -43.1729)
 }
 
-st.title("🌍 Global Travel Guide")
-st.subheader("Find your perfect vacation destination")
+st.markdown("<h1 style='text-align: center'>🌍 Global Travel Guide</h1>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: center'>Find your perfect vacation destination</h3>", unsafe_allow_html=True)
+st.divider()
 
 # create city dropdown that starts blank
 cities = get_all_cities()
@@ -61,6 +62,7 @@ with column2:
         st.session_state["selected_city"]=random_city  # brings the chosen destination to the destination page
         st.switch_page("pages/destination.py")
 
+st.divider()
 # map with all the destinations
 st.subheader("20 Most Popular Destinations")
 my_map = folium.Map(location=[20, 0], zoom_start=2)  # map centered on world
@@ -71,46 +73,51 @@ for city, coords in city_coordinates.items():
     popup=city,
     tooltip=city
 ).add_to(my_map)
-st_folium(my_map, width=700, height=400)
+st_folium(my_map, width=600, height=300)
 
+st.divider()
 # implement the crud methods of insert new city, update description, or delete a city
-st.subheader("Manage Destinations")
-tab1, tab2, tab3 = st.tabs(["Add City", "Delete City", "Update City"])
+with st.expander("🗄️ Manage Destinations"):
+    tab1, tab2, tab3 = st.tabs(["Add City", "Delete City", "Update City"])
 
-with tab1:  # add a new city
-    new_name = st.text_input("City Name")
-    new_desc = st.text_area("Description")
-    new_pop = st.text_input("Population")
-    if st.button("Add City"):
-        from database import insert_new_city
-        result = insert_new_city(new_name, new_desc, new_pop)
-        if result:
-            st.success("City added!")
-        else:
-            st.error("Could not add city!")
+    with tab1:  # add a new city
+        new_name = st.text_input("City Name")
+        new_desc = st.text_area("Description")
+        new_pop = st.text_input("Population")
+        if st.button("Add City"):
+            from database import insert_new_city
+            result = insert_new_city(new_name, new_desc, new_pop)
+            if result:
+                st.success("City added!")
+            else:
+                st.error("Could not add city!")
 
-with tab2:  # delete a city
-    city_to_delete = st.selectbox("Select city to delete", cities)
-    if st.button("Delete City"):
-        from database import delete_city
-        result = delete_city(city_to_delete)
-        if result:
-            st.success("City Deleted")
-        else:
-            st.error("City not found")
+    with tab2:  # delete a city
+        city_to_delete = st.selectbox("Select city to delete", cities)
+        if st.button("Delete City"):
+            from database import delete_city
+            result = delete_city(city_to_delete)
+            if result:
+                st.success("City Deleted")
+            else:
+                st.error("City not found")
 
-with tab3:  # update a city
-    city_to_update = st.selectbox("Select city to update", cities)
-    updated_desc = st.text_area("New Description")
-    if st.button("Update Description"):
-        from database import update_city
-        result = update_city(city_to_update, updated_desc)
-        if result:
-            st.success("Description Updated")
-        else:
-            st.error("Could not update")
+    with tab3:  # update a city
+        city_to_update = st.selectbox("Select city to update", cities)
+        updated_desc = st.text_area("New Description")
+        if st.button("Update Description"):
+            from database import update_city
+            result = update_city(city_to_update, updated_desc)
+            if result:
+                st.success("Description Updated")
+            else:
+                st.error("Could not update")
 
 # chat bot for ideas of where to go
-st.subheader("Not sure where to go? Ask our AI Travel Advisor!")
-get_response("You are a friendly travel advisor helping users decide where to go on vacation. Suggest destinations based on their preferences, budget, and interests.",
-"Where should I go on vacation?", chat_key="main_messages")
+with st.expander("💬 Chat with our AI Travel Advisor"):
+    get_response("You are a friendly travel advisor...",
+    "Where should I go on vacation?",
+    chat_key="main_messages")
+
+st.markdown("---")
+st.markdown("Made with ❤️ | Global Travel Guide 2026")

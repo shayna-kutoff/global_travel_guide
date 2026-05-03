@@ -54,13 +54,14 @@ The AI is accessed via the OpenAI Python library using Azure credentials stored 
 ## 🧪 Testing
 Run the test suite:
 pytest tests/
-Run tests with python -m pytest:
+Or using python -m pytest:
 python -m pytest tests/
-Generate coverage report:
+Run with coverage report:
+pytest tests/ --cov=. --cov-report=term-missing
+Generate HTML coverage report:
 pytest tests/ --cov=. --cov-report=html
-open htmlcov/index.html
-Tests cover:
-- Database functions
+Tests achieve > 60% coverage and cover:
+- Database functions (CRUD operations)
 - Scraper parsing functions
 - Weather API parsing
 

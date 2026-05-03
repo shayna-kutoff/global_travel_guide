@@ -5,7 +5,6 @@ The scraper recieves for each city:
 - a short overview/description of the place
 - Population
 - A list of landmarks and/or attractions
-- An image url (if available)
 the data is cleaned and saved into SQLite db where it will be
 displayed by streamlit app.
 """
@@ -51,8 +50,8 @@ def init_db():
     conn.commit()
     conn.close()
 
-# fetch the HTML content of a city's Wikipedia page
 def fetch_page(city):
+    """ Returns the HTML content of a city's Wikipedia page"""
     url = f"https://en.wikipedia.org/wiki/{city.replace(' ', '_')}"
     # have to pretend to be normal browser so wiki will let me access
     headers = {
@@ -62,9 +61,8 @@ def fetch_page(city):
     response.raise_for_status()
     return response.text
 
-# parse each part of the page, 1 function at a time
-# start with description
 def parse_description(soup):
+    """ Returns clean description of the city """
     # allows us to ignore everything that is not part of actual article
     content = soup.find(id="mw-content-text") or soup.find(class_="mw-parser-output")
     if not content:
@@ -80,8 +78,8 @@ def parse_description(soup):
             return text
     return "No description available"
 
-# parse the population
 def parse_population(soup):
+    """ Returns the clean population from Wikipedias infobox"""
     # every city page in wiki has infobox which stores info about the city, we want the pop from there
     infobox = soup.find("table", class_="infobox")  # beautiful soup knows where to find it
     if not infobox:
@@ -97,8 +95,9 @@ def parse_population(soup):
                 return next_row
     return None
 
-# parse teh landmarks
 def parse_landmarks(soup):
+    """ Returns major landmarks for the city,"""
+    # Wikipedia is not consistent with storing landmarks, so skipped this part, couldn't access it well
     landmarks = []
     headers = soup.find_all(["h2", "h3"])  # collect the major sections and the subsections
     for header in headers:
@@ -111,8 +110,8 @@ def parse_landmarks(soup):
             break
     return landmarks
 
-# now save all the parsed data to db
 def save_to_db(name, description, population, image_url, landmarks):
+    """ Save all of the parsed data to the database """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     # insert the city
@@ -134,10 +133,8 @@ def save_to_db(name, description, population, image_url, landmarks):
     conn.commit()
     conn.close()
 
-# function to scrape the cities and save them
 def run_scraper():
     init_db()
-
     for city in cities:
         try:
             print(f"Scraping {city}")

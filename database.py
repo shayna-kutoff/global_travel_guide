@@ -8,8 +8,8 @@ import sqlite3
 import os
 DB_PATH = os.environ.get("TEST_DB", "data/travel.db")
 
-# function to get all the cities to fill the dropdown
 def get_all_cities():
+    """Returns a list of all city names from the database"""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT name FROM cities")
@@ -17,8 +17,8 @@ def get_all_cities():
     conn.close()
     return [row[0] for row in rows]
 
-# function to add a new city into the database
 def insert_new_city(name, description, population):
+    """ Inserts a new city with description and population into the database"""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     if not name or not description or not population:
@@ -30,6 +30,7 @@ def insert_new_city(name, description, population):
     return True
 
 def update_city(name, new_description):
+    """ Updates an existind city's description """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT id FROM cities WHERE name = ?", (name,))
@@ -43,6 +44,7 @@ def update_city(name, new_description):
     return True
 
 def delete_city(name):
+    """ Deletes a selected city from the database"""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT id FROM cities WHERE name = ?", (name,))
@@ -55,8 +57,8 @@ def delete_city(name):
     conn.close()
     return True
 
-# function to pull the information from the cities table, based on the city name chosen
 def get_city_info(city_name):
+    """ Returns all info for a specific city from the database"""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT*FROM cities WHERE name =?",(city_name,))  # select info from cities table, ? is the parameter we give it
@@ -65,6 +67,7 @@ def get_city_info(city_name):
     return row
 
 def get_landmarks(city_name):
+    """ Returns the scraped data from the landmarks table """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute("SELECT id FROM cities WHERE name =?",(city_name,))

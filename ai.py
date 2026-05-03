@@ -6,9 +6,10 @@ Functions as a travel advisor to the users
 import streamlit as st
 from openai import AzureOpenAI
 
-def get_response(system_prompt, placeholder="Ask me anything about travel!", chat_key="messages"):  # now chatbot could function as both
-    # advisor to where to go and advisor of what to do in specific place, based on where you ask it
-    # load the secrets
+def get_response(system_prompt, placeholder="Ask me anything about travel!", chat_key="messages"):
+    """ Renders an AI Chatbot interface using Azure OpenAI,
+    takes a system prompt to define teh AI's role, a placeholder for the chat input,
+    and a chat_key to store separate conversation histories for diff pages"""
     openai_api_key = st.secrets["AZURE_OPENAI_API_KEY"]
     openai_api_endpoint = st.secrets["AZURE_OPENAI_ENDPOINT"]
     # set up the client

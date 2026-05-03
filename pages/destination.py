@@ -16,13 +16,15 @@ from ai import get_response
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")
-# button to take user back to main menu, clear chat
-if st.button("Back to Main Menu"):
-    st.session_state["destination_messages"] = []
-    st.switch_page("app.py")
 
 city = st.session_state["selected_city"]
-st.title(f"🌍 {city}")
+col1, col2 = st.columns([1, 6])
+with col1:
+    if st.button("🏠 Back"):
+        st.session_state["destination_messages"] = []
+        st.switch_page("app.py")
+    with col2:
+        st.markdown(f"<h1 style='text-align: center'>🌍 {city}</h1>", unsafe_allow_html=True)
 
 # call my database functions to get info about city
 city_info = get_city_info(city)
@@ -37,18 +39,22 @@ with col2:
 
 st.subheader("Population")
 st.write(city_info[3])  # population
+st.divider()
 # display landmarks didn't work, take user to wiki page to learn more
 st.subheader("Learn More")
 st.markdown(f"[Read more about {city} on Wikipedia](https://en.wikipedia.org/wiki/{city.replace(' ', '_')})")
 # add flight links to destinations
 st.markdown(f"[✈️ Search Flights to {city}](https://www.google.com/travel/flights/search?q=flights+to+{city.replace(' ', '+')})")
 
+st.divider()
+
 # display weather forecast, in 2 columns
-col1, col2 = st.columns([1, 1.5])
+col1, col2 = st.columns(2)
 with col1:
-    st.subheader(f"5 Day Weather Forecast For {city}")
-    weather_data = fetch_weather(city)
-    forecast = parse_forecast(weather_data)
+    st.subheader(f"5 Day Weather Forecast")
+    with st.spinner("Fetching weather data..."):
+        weather_data = fetch_weather(city)
+        forecast = parse_forecast(weather_data)
     daily_forecast = []
     for weather in forecast:  # loop through forecast and only keeep 1 data per day
         if "12:00:00" in weather["date"]:
@@ -64,7 +70,13 @@ with col2:
     fig = px.line(df,x='date', y='temp', labels={'date':'Date', 'temp': 'Temperature(*F)'})
     st.plotly_chart(fig)  # display the chart
 
+st.divider()
+
 # ai chatbot about destination
-st.subheader("Ask Our Travel AI Chatbot")
-get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",
-"Ask me anything about " + city + "!", chat_key="destination_messages")
+with st.expander("💬 Ask our AI about " + city):
+    get_response(f"You are a travel advisor...",
+    "Ask me anything about " + city + "!",
+    chat_key="destination_messages")
+
+st.markdown("---")
+st.markdown("Made with ❤️ | Global Travel Guide 2026")

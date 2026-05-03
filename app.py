@@ -28,3 +28,8 @@ with column2:
         random_city = random.choice(cities)  # the chosen city should be randomly generated
         st.session_state["selected_city"]=random_city  # brings the chosen destination to the destination page
         st.switch_page("pages/destination.py")
+
+# chat bot for ideas of where to go
+st.subheader("Not sure where to go? Ask our AI Travel Advisor!")
+get_response("You are a friendly travel advisor helping users decide where to go on vacation. Suggest destinations based on their preferences, budget, and interests.",
+"Where should I go on vacation?", chat_key="main_messages")

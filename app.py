@@ -14,7 +14,15 @@ from streamlit_folium import st_folium
 
 # get rid of sidebar
 st.set_page_config(page_title="Global Travel Guide", page_icon="🌍", initial_sidebar_state="collapsed")
-
+# change font
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+    html, body, [class="css"] {*
+    font-family: 'Playfair Display', serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
 # coordinates for all destinations so they could appear on the map
 city_coordinates = {
     "Paris": (48.8566, 2.3522),
@@ -48,7 +56,7 @@ cities = get_all_cities()
 selected_city = st.selectbox("Choose a destination", [""] + cities)
 
 # buttons to take user to destination page
-column1, column2 = st.columns(2)  # buttons are next to each other
+column1, column2, column3 = st.columns([1, 1, 2])  # buttons are next to each other
 with column1:
     if st.button("🌍 Take me there!"):
         if selected_city == "":  # display warning if no city is selected

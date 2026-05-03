@@ -12,7 +12,6 @@ from ai import get_response
 import folium
 from streamlit_folium import st_folium
 
-st.set_page_config(layout="wide")
 
 # coordinates for all destinations so they could appear on the map
 city_coordinates = {

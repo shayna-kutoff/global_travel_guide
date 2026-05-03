@@ -70,12 +70,6 @@ for city, coords in city_coordinates.items():
 ).add_to(my_map)
 st_folium(my_map, width=700, height=400)
 
-# chat bot for ideas of where to go
-st.subheader("Not sure where to go? Ask our AI Travel Advisor!")
-get_response("You are a friendly travel advisor helping users decide where to go on vacation. Suggest destinations based on their preferences, budget, and interests.",
-"Where should I go on vacation?", chat_key="main_messages")
-
-
 # implement the crud methods of insert new city, update description, or delete a city
 st.subheader("Manage Destinations")
 tab1, tab2, tab3 = st.tabs(["Add City", "Delete City", "Update City"])
@@ -112,3 +106,8 @@ with tab3:  # update a city
             st.success("Description Updated")
         else:
             st.error("Could not update")
+
+# chat bot for ideas of where to go
+st.subheader("Not sure where to go? Ask our AI Travel Advisor!")
+get_response("You are a friendly travel advisor helping users decide where to go on vacation. Suggest destinations based on their preferences, budget, and interests.",
+"Where should I go on vacation?", chat_key="main_messages")

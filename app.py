@@ -46,11 +46,12 @@ selected_city = st.selectbox("Choose a destination",[""] + cities)
 # buttons to take user to destination page
 column1, column2 = st.columns(2)  # buttons are next to each other
 with column1:
-    if selected_city == "":  # display warning if no city is selected
-        st.warning("Please select a destination first!")
-    else:
-        st.session_state["selected_city"] = selected_city
-        st.switch_page("pages/destination.py")
+    if st.button("🌍 Take me there!"):
+        if selected_city == "":  # display warning if no city is selected
+            st.warning("Please select a destination first!")
+        else:
+            st.session_state["selected_city"] = selected_city
+            st.switch_page("pages/destination.py")
 with column2:
     if st.button("🎲 Surprise me!"):
         random_city = random.choice(cities)  # the chosen city should be randomly generated

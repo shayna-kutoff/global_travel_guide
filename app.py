@@ -12,6 +12,13 @@ from ai import get_response
 import folium
 from streamlit_folium import st_folium
 
+# get rid of sidebar
+st.markdown("""
+<style>
+[data-testid="stSidebar"] {display: none;}
+</style>
+""", unsafe_allow_html=True)
+
 # coordinates for all destinations so they could appear on the map
 city_coordinates = {
 "Paris": (48.8566, 2.3522),

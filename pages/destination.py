@@ -15,22 +15,25 @@ from ai import get_response
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")
-city = st.session_state["selected_city"]
-st.title(f"🌍 {city}")
-# show image from wikis api
-image_url = fetch_city_image(city)
-if image_url:
-    st.image(image_url, width=800)
-
 # button to take user back to main menu, clear chat
 if st.button("Back to Main Menu"):
     st.session_state["destination_messages"] = []
     st.switch_page("app.py")
 
+city = st.session_state["selected_city"]
+st.title(f"🌍 {city}")
+
 # call my database functions to get info about city
 city_info = get_city_info(city)
-landmarks = get_landmarks(city)
-st.write(city_info[2])  # details
+# show image from wikis api next to description
+col1, col2 = st.columns(2)
+with col1:
+    st.write(city_info[2])  # details
+with col2:
+    image_url = fetch_city_image(city)
+    if image_url:
+        st.image(image_url, width=400)
+
 st.subheader("Population")
 st.write(city_info[3])  # population
 # display landmarks didn't work, take user to wiki page to learn more

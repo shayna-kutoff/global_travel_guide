@@ -45,7 +45,7 @@ st.markdown(f"[✈️ Search Flights to {city}](https://www.google.com/travel/fl
 # display weather forecast, in 2 columns
 col1, col2 = st.columns([1, 1.5])
 with col1:
-    st.subheader("5 Day Weather Forecast")
+    st.subheader(f"5 Day Weather Forecast For {city}")
     weather_data = fetch_weather(city)
     forecast = parse_forecast(weather_data)
     daily_forecast = []
@@ -60,7 +60,7 @@ with col2:
     df = pd.DataFrame(daily_forecast)  # convert list into table to work with
     df['date'] = df['date'].str[:10]  # display the clean date data
     # create a line chart with x and y axis, title and labels
-    fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
+    fig = px.line(df,x='date', y='temp', labels={'date':'Date', 'temp': 'Temperature(*F)'})
     st.plotly_chart(fig)  # display the chart
 
 # ai chatbot about destination

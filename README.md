@@ -4,7 +4,7 @@ Live App: https://globaltravelguide-zgk4kbc4wwwxddnrusifyp.streamlit.app
 
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 
-## Setup & Installation
+## 🛠️ Setup & Installation
 1. Clone the repository:
 git clone https://github.com/shayna-kutoff/global_travel_guide.git
 cd global_travel_guide
@@ -22,6 +22,10 @@ python scraper.py
 streamlit run app.py
 
 ## 📖 How to Use
+### Using the Deployed App
+Visit the live app at https://globaltravelguide-zgk4kbc4wwwxddnrusifyp.streamlit.app
+No installation needed — the app runs directly in your browser.
+Note: The AI chatbot requires valid Azure OpenAI credentials configured in Streamlit's secrets manager.
 ### Main Page
 - Browse the interactive world map showing all 20 destinations
 - Select a city from the dropdown menu
@@ -30,13 +34,18 @@ streamlit run app.py
 - Chat with the AI Travel Advisor for personalized recommendations
 ### Destination Page
 - View a description and population of the city
-- Browse landmarks and attractions
+- Click the Wikipedia link to learn more about the city
 - Check the 5 day weather forecast
 - View an interactive temperature chart
 - Ask the AI chatbot questions about the destination
 - Click "Back to Main Menu" to return home
+### Managing Destinations
+At the bottom of the main page you can manage the database:
+- Add City tab — add a new destination by entering a name, description and population
+- Delete City tab — remove a destination from the database
+- Update City tab — suggest a new description for an existing city
 
-## AI Integration
+## 🤖 AI Integration
 This app uses Azure OpenAI (GPT) for two features:
 1. Main Page Travel Advisor — helps users decide where to go based on their preferences, budget, and interests
 2. Destination Page Chatbot — answers specific questions about the chosen city including things to do, eat, and see
@@ -52,7 +61,7 @@ Tests cover:
 - Scraper parsing functions
 - Weather API parsing
 
-## Dependencies
+## 📦 Dependencies
 See requirements.txt for full list. Main libraries:
 - streamlit
 - requests

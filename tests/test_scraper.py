@@ -10,6 +10,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from bs4 import BeautifulSoup
 import sqlite3
+from unittest.mock import patch
 from scraper import init_db, parse_description, parse_landmarks, parse_population, fetch_page, save_to_db, run_scraper
 
 def test_init_db():
@@ -22,6 +23,13 @@ def test_init_db():
     assert "cities" in tables
     assert "landmarks" in tables
 
+def test_fetch_page():
+    with patch("scraper.requests.get") as mock_get:
+        mock_get.return_value.text = "<html><body>Test</body></html>"
+        mock_get.return_value.raise_for_status = lambda: None
+        result = fetch_page("Paris")
+        assert result == "<html><body>Test</body></html>"
+
 def test_parse_description():
     html = """
     <div id="mw-content-text">
@@ -33,6 +41,24 @@ def test_parse_description():
     assert isinstance(result, str)
     assert len(result) > 0
     assert "Paris" in result
+
+def test_parse_description_no_content():
+    html = "<div><p>Hi</p></div>"
+    soup = BeautifulSoup(html, "html.parser")
+    result = parse_description(soup)
+    assert result == "Description not found"
+
+def test_parse_description_no_paragraphs():
+    html = "<div id='mw-content-text'></div>"
+    soup = BeautifulSoup(html, "html.parser")
+    result = parse_description(soup)
+    assert result == "No description available"
+
+def test_parse_population_no_infobox():
+    html = "<div><p>No infobox here</p></div>"
+    soup = BeautifulSoup(html, "html.parser")
+    result = parse_population(soup)
+    assert result is None
 
 def test_parse_landmarks():
     html = """
@@ -63,6 +89,17 @@ def test_parse_population():
     result = parse_population(soup)
     assert result is not None
     assert "2,161,000" in result
+
+def test_parse_population_no_valid_number():
+    html = """
+    <table class="infobox">
+    <tr><td>Population</td></tr>
+    <tr><td>Unknown</td></tr>
+    </table>
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    result = parse_population(soup)
+    assert result is None
 
 def test_save_to_db():
     save_to_db("TestCity", "A test description", "1,000,000", None, ["Test Landmark"])

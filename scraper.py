@@ -85,14 +85,16 @@ def parse_population(soup):
     if not infobox:
         return None
     rows = infobox.find_all("tr")
-    for i, row in enumerate(rows):  # need the position so could go to next row for actual number
-        if "Population" in row.get_text():
-            if i + 1< len(rows):
-                next_row = rows[i +1].get_text(strip=True)
-                next_row = re.sub(r'\[.*?\]', '', next_row)
-                numbers = re.findall(r'[\d,]+', next_row)  # return everuthing found and make return the population num
-                next_row = numbers[0] if numbers else next_row   # if first num is found return it, else use the next row
-                return next_row
+    for i, row in enumerate(rows):
+        text = row.get_text(strip=True)
+        if "Population" in text and len(text) < 50:
+            for j in range(i+1, min(i+6, len(rows))):
+                next_text = rows[j].get_text(strip=True)
+                next_text = re.sub(r'\[.*?\]', '', next_text)
+                numbers = re.findall(r'[\d,]+', next_text)
+                for num in numbers:
+                    if len(num.replace(',', '')) >= 5:
+                        return num
     return None
 
 def parse_landmarks(soup):

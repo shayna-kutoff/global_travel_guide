@@ -40,6 +40,14 @@ def test_insert_new_city():
     result = insert_new_city("TestCity2", "An epic city", "1,000,000")
     assert result == True
 
+def test_insert_empty_city():
+    result = insert_new_city("", "", "")
+    assert result == False
+
+def test_insert_none_city():
+    result = insert_new_city(None, None, None)
+    assert result == False
+
 def test_delete_city():
     insert_new_city("CityToDelete", "An epic city", "500,000")
     result = delete_city("CityToDelete")
@@ -53,3 +61,7 @@ def test_update_city():
     insert_new_city("CityToUpdate", "An epic city to update", "100,000")
     result = update_city("CityToUpdate", "The city has been updated")
     assert result == True
+
+def test_update_city_not_found():
+    result = update_city("FakeCity999", "new description")
+    assert result == False

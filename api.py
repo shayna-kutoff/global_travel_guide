@@ -27,3 +27,14 @@ def parse_forecast(data):
         "rain": chance_of_rain
     })
     return forecast
+
+# get a pic for the city
+def fetch_city_image(city):
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{city.replace(' ', '_')}"
+        response = requests.get(url)
+        data = response.json()
+        if "thumbnail" in data:
+            return data["thumbnail"]["source"]
+    except:
+        return None

@@ -53,7 +53,7 @@ def delete_city(name):
     cur.execute("DELETE FROM cities WHERE name = ?", (name,))
     conn.commit()
     conn.close()
-    return True 
+    return True
 
 # function to pull the information from the cities table, based on the city name chosen
 def get_city_info(city_name):

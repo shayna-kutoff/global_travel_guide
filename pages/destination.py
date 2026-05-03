@@ -7,7 +7,7 @@ and ai.py for travel suggestions about the specific city.
 
 import streamlit as st
 from database import get_city_info, get_landmarks
-from api import fetch_weather, parse_forecast
+from api import fetch_weather, parse_forecast, fetch_city_image
 import plotly.express as px
 import pandas as pd
 from ai import get_response
@@ -17,6 +17,11 @@ if "selected_city" not in st.session_state:
     st.switch_page("app.py")
 city = st.session_state["selected_city"]
 st.title(f"🌍 {city}")
+# show image from wikis api
+image_url = fetch_city_image(city)
+if image_url:
+    st.image(image_url, width=800)
+
 # button to take user back to main menu, clear chat
 if st.button("Back to Main Menu"):
     st.session_state["destination_messages"] = []
@@ -28,13 +33,9 @@ landmarks = get_landmarks(city)
 st.write(city_info[2])  # details
 st.subheader("Population")
 st.write(city_info[3])  # population
-# display landmarks
-st.subheader("Landmarks and Attractions")
-if landmarks:
-    for landmark in landmarks:
-        st.write(f"• {landmark[0]}")
-else:
-    st.info("No landmarks data available for this city.")
+# display landmarks didn't work, take user to wiki page to learn more
+st.subheader("Learn More")
+st.markdown(f"[Read more about {city} on Wikipedia](https://en.wikipedia.org/wiki/{city.replace(' ', '_')})")
 
 # display weather forecast, in 2 columns
 col1, col2 = st.columns(2)
@@ -61,4 +62,3 @@ with col2:
 st.subheader("Ask Our Travel AI Chatbot")
 get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",
 "Ask me anything about " + city + "!", chat_key="destination_messages")
-

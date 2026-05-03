@@ -73,4 +73,3 @@ def test_save_to_db():
     conn.close()
     assert result is not None
     assert result[0] == "TestCity"
-

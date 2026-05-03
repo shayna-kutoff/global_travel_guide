@@ -32,9 +32,11 @@ def parse_forecast(data):
 def fetch_city_image(city):
     try:
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{city.replace(' ', '_')}"
-        response = requests.get(url)
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        response = requests.get(url, headers=headers)
         data = response.json()
         if "thumbnail" in data:
             return data["thumbnail"]["source"]
+        return None
     except:
         return None

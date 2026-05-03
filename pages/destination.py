@@ -12,6 +12,8 @@ import plotly.express as px
 import pandas as pd
 from ai import get_response
 
+st.title(f"🌍 {city}")
+
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")
@@ -31,24 +33,27 @@ if landmarks:
 else:
     st.info("No landmarks data available for this city.")
 
-# display weather forecast
-st.subheader("5 Day Weather Forecast")
-weather_data = fetch_weather(city)
-forecast = parse_forecast(weather_data)
-daily_forecast = []
-for weather in forecast:  # loop through forecast and only keeep 1 data per day
-    if "12:00:00" in weather["date"]:
-        daily_forecast.append(weather)
-for weather in daily_forecast:  # now loop through daily forecast list and print
-    st.write(f"{weather['date'][:10]} — 🌡️ {weather['temp']}*F — 🌧️ {weather['rain']:.0f}% chance of rain")
+# display weather forecast, in 2 columns
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader("5 Day Weather Forecast")
+    weather_data = fetch_weather(city)
+    forecast = parse_forecast(weather_data)
+    daily_forecast = []
+    for weather in forecast:  # loop through forecast and only keeep 1 data per day
+        if "12:00:00" in weather["date"]:
+            daily_forecast.append(weather)
+    for weather in daily_forecast:  # now loop through daily forecast list and print
+        st.write(f"{weather['date'][:10]} — 🌡️ {weather['temp']}*F — 🌧️ {weather['rain']:.0f}% chance of rain")
 
 # chart to display header
-st.subheader("📊 Weather This Week")
-df = pd.DataFrame(daily_forecast)  # convert list into table to work with
-df['date'] = df['date'].str[:10]  # display the clean date data
-# create a line chart with x and y axis, title and labels
-fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
-st.plotly_chart(fig)  # display the chart
+with col2:
+    st.subheader("Weather This Week")
+    df = pd.DataFrame(daily_forecast)  # convert list into table to work with
+    df['date'] = df['date'].str[:10]  # display the clean date data
+    # create a line chart with x and y axis, title and labels
+    fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
+    st.plotly_chart(fig)  # display the chart
 
 # ai chatbot about destination
 st.subheader("Ask Our Travel AI Chatbot")
@@ -60,4 +65,3 @@ get_response(f"You are a travel advisor giving detailed advice about {city}. Tel
 if st.button("Back to Main Menu"):
     st.session_state["destination_messages"] = []
     st.switch_page("app.py")
-st.title(f"🌍 {city}")

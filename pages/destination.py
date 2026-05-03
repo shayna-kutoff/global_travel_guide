@@ -39,9 +39,11 @@ st.write(city_info[3])  # population
 # display landmarks didn't work, take user to wiki page to learn more
 st.subheader("Learn More")
 st.markdown(f"[Read more about {city} on Wikipedia](https://en.wikipedia.org/wiki/{city.replace(' ', '_')})")
+# add flight links to destinations
+st.markdown(f"[✈️ Search Flights to {city}](https://www.google.com/travel/flights/search?q=flights+to+{city.replace(' ', '+')})")
 
 # display weather forecast, in 2 columns
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1, 1.5])
 with col1:
     st.subheader("5 Day Weather Forecast")
     weather_data = fetch_weather(city)
@@ -60,9 +62,6 @@ with col2:
     # create a line chart with x and y axis, title and labels
     fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
     st.plotly_chart(fig)  # display the chart
-
-# add flight links to destinations
-st.markdown(f"[✈️ Search Flights to {city}](https://www.google.com/travel/flights/search?q=flights+to+{city.replace(' ', '+')})")
 
 # ai chatbot about destination
 st.subheader("Ask Our Travel AI Chatbot")

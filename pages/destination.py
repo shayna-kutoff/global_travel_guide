@@ -10,6 +10,7 @@ from database import get_city_info, get_landmarks
 from api import fetch_weather, parse_forecast
 import plotly.express as px
 import pandas as pd
+from ai import get_response
 
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
@@ -51,3 +52,9 @@ df['date'] = df['date'].str[:10]  # display the clean date data
 # create a line chart with x and y axis, title and labels
 fig = px.line(df,x='date', y='temp', title=f'Temperature in {city} this week', labels={'date':'Date', 'temp': 'Temperature(*F)'})
 st.plotly_chart(fig)  # display the chart
+
+# ai chatbot about destination
+st.subheader("Ask Our Travel AI Chatbot")
+get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",
+"Ask me anything about " + city + "!"
+)

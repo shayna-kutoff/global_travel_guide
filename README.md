@@ -2,6 +2,8 @@
 A Streamlit web application that helps users discover and plan their perfect vacation destination. Browse 20 of the world's most popular cities, get real-time weather forecasts, explore landmarks, and chat with an AI travel advisor.
 Live App: https://globaltravelguide-zgk4kbc4wwwxddnrusifyp.streamlit.app
 
+https://img.shields.io/badge/tests-passing-brightgreen
+
 ## Setup & Installation
 1. Clone the repository:
 git clone https://github.com/shayna-kutoff/global_travel_guide.git

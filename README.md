@@ -54,8 +54,11 @@ The AI is accessed via the OpenAI Python library using Azure credentials stored 
 ## 🧪 Testing
 Run the test suite:
 pytest tests/
-Run with coverage report:
-pytest tests/ --cov=. --cov-report=term-missing
+Run tests with python -m pytest:
+python -m pytest tests/
+Generate coverage report:
+pytest tests/ --cov=. --cov-report=html
+open htmlcov/index.html
 Tests cover:
 - Database functions
 - Scraper parsing functions

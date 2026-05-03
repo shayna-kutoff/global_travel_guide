@@ -13,11 +13,7 @@ import folium
 from streamlit_folium import st_folium
 
 # get rid of sidebar
-st.markdown("""
-<style>
-[data-testid="stSidebar"] {display: none;}
-</style>
-""", unsafe_allow_html=True)
+st.set_page_config(initial_sidebar_state="collapsed")
 
 # coordinates for all destinations so they could appear on the map
 city_coordinates = {

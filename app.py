@@ -39,15 +39,17 @@ city_coordinates = {
 st.title("🌍 Global Travel Guide")
 st.subheader("Find your perfect vacation destination")
 
-# create city dropdown
+# create city dropdown that starts blank
 cities = get_all_cities()
-selected_city = st.selectbox("Choose a destination", cities)
+selected_city = st.selectbox("Choose a destination",[""] + cities)
 
 # buttons to take user to destination page
 column1, column2 = st.columns(2)  # buttons are next to each other
 with column1:
-    if st.button("Take me there!"):
-        st.session_state["selected_city"]=selected_city
+    if selected_city == "":  # display warning if no city is selected
+        st.warning("Please select a destination first!")
+    else:
+        st.session_state["selected_city"] = selected_city
         st.switch_page("pages/destination.py")
 with column2:
     if st.button("🎲 Surprise me!"):

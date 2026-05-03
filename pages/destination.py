@@ -12,12 +12,11 @@ import plotly.express as px
 import pandas as pd
 from ai import get_response
 
-st.title(f"🌍 {city}")
-
 # if no city was selected, go straight to home page
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")
 city = st.session_state["selected_city"]
+st.title(f"🌍 {city}")
 
 # call my database functions to get info about city
 city_info = get_city_info(city)
@@ -59,7 +58,6 @@ with col2:
 st.subheader("Ask Our Travel AI Chatbot")
 get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",
 "Ask me anything about " + city + "!", chat_key="destination_messages")
-
 
 # button to take user back to main menu, clear chat
 if st.button("Back to Main Menu"):

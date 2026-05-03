@@ -4,8 +4,9 @@ Tests for scraper.py functions.
 tests web scraping, parsing and storing
 uses mocking
 """
-import sys
 import os
+os.environ["TEST_DB"] = "data/test_travel.db"
+import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from bs4 import BeautifulSoup
 import sqlite3
@@ -13,7 +14,7 @@ from scraper import init_db, parse_description, parse_landmarks, parse_populatio
 
 def test_init_db():
     # check that function creates correct tables
-    conn = sqlite3.connect("data/travel.db")
+    conn = sqlite3.connect("data/test_travel.db")
     cur = conn.cursor()
     cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
     tables = [row[0] for row in cur.fetchall()]
@@ -65,7 +66,7 @@ def test_parse_population():
 
 def test_save_to_db():
     save_to_db("TestCity", "A test description", "1,000,000", None, ["Test Landmark"])
-    conn = sqlite3.connect("data/travel.db")
+    conn = sqlite3.connect("data/test_travel.db")
     cur = conn.cursor()
     cur.execute("SELECT name FROM cities WHERE name = 'TestCity'")
     result = cur.fetchone()

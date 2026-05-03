@@ -1,4 +1,5 @@
 **/secrets.toml
+data/test_travel.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

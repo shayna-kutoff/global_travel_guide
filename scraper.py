@@ -13,6 +13,9 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import re
+import os
+# do this so could run test on db without inserting or deleting real data
+DB_PATH = os.environ.get("TEST_DB", "data/travel.db")  # reads an enviroment variable so could change w/o changing code
 
 # list of cities to scrape
 cities = [
@@ -24,7 +27,7 @@ cities = [
 
 # function to set up the database
 def init_db():
-    conn = sqlite3.connect("data/travel.db")
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     # create location table
     cur.execute("""
@@ -110,7 +113,7 @@ def parse_landmarks(soup):
 
 # now save all the parsed data to db
 def save_to_db(name, description, population, image_url, landmarks):
-    conn = sqlite3.connect("data/travel.db")
+    conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     # insert the city
     cur.execute("""

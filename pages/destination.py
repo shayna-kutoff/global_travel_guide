@@ -16,11 +16,6 @@ from ai import get_response
 if "selected_city" not in st.session_state:
     st.switch_page("app.py")
 city = st.session_state["selected_city"]
-# button to take user back to main menu, clear chat
-if st.button("Back to Main Menu"):
-    st.session_state["destination_messages"] = []
-    st.switch_page("app.py")
-st.title(f"🌍 {city}")
 
 # call my database functions to get info about city
 city_info = get_city_info(city)
@@ -59,3 +54,10 @@ st.plotly_chart(fig)  # display the chart
 st.subheader("Ask Our Travel AI Chatbot")
 get_response(f"You are a travel advisor giving detailed advice about {city}. Tell the user what to do, eat, and see there.",
 "Ask me anything about " + city + "!", chat_key="destination_messages")
+
+
+# button to take user back to main menu, clear chat
+if st.button("Back to Main Menu"):
+    st.session_state["destination_messages"] = []
+    st.switch_page("app.py")
+st.title(f"🌍 {city}")

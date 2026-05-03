@@ -74,3 +74,41 @@ st_folium(my_map, width=700, height=400)
 st.subheader("Not sure where to go? Ask our AI Travel Advisor!")
 get_response("You are a friendly travel advisor helping users decide where to go on vacation. Suggest destinations based on their preferences, budget, and interests.",
 "Where should I go on vacation?", chat_key="main_messages")
+
+
+# implement the crud methods of insert new city, update description, or delete a city
+st.subheader("Manage Destinations")
+tab1, tab2, tab3 = st.tabs(["Add City", "Delete City", "Update City"])
+
+with tab1:  # add a new city
+    new_name = st.text_input("City Name")
+    new_desc = st.text_area("Description")
+    new_pop = st.text_input("Population")
+    if st.button("Add City"):
+        from database import insert_new_city
+        result = insert_new_city(new_name, new_desc, new_pop)
+        if result:
+            st.success("City added!")
+        else:
+            st.error("Could not add city!")
+
+with tab2:  # delete a city
+    city_to_delete = st.selectbox("Select city to delete", cities)
+    if st.button("Delete City"):
+        from database import delete_city
+        result = delete_city(city_to_delete)
+        if result:
+            st.success("City Deleted")
+        else:
+            st.error("City not found")
+
+with tab3:  # update a city
+    city_to_update = st.selectbox("Select city to update", cities)
+    updated_desc = st.text_area("New Description")
+    if st.button("Update Description"):
+        from database import update_city
+        result = update_city(city_to_update, updated_desc)
+        if result:
+            st.success("Description Updated")
+        else:
+            st.error("Could not update")

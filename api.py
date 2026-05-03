@@ -22,10 +22,10 @@ def parse_forecast(data):
         temp = item["main"]["temp"]
         chance_of_rain = item["pop"] * 100  # make it into percentage
         forecast.append({
-        "date": date,
-        "temp": temp,
-        "rain": chance_of_rain
-    })
+            "date": date,
+            "temp": temp,
+            "rain": chance_of_rain
+        })
     return forecast
 
 def fetch_city_image(city):

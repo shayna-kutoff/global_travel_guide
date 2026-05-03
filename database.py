@@ -51,7 +51,7 @@ def delete_city(name):
     city = cur.fetchone()
     if city is None:
         conn.close()
-        return False # city not found
+        return False  # city not found
     cur.execute("DELETE FROM cities WHERE name = ?", (name,))
     conn.commit()
     conn.close()
@@ -61,7 +61,7 @@ def get_city_info(city_name):
     """ Returns all info for a specific city from the database"""
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
-    cur.execute("SELECT*FROM cities WHERE name =?",(city_name,))  # select info from cities table, ? is the parameter we give it
+    cur.execute("SELECT*FROM cities WHERE name =?", (city_name,))  # select info from cities table, ? is the parameter we give it
     row = cur.fetchone()  # fetch the info from only 1 city and save it in the row
     conn.close()
     return row
@@ -70,7 +70,7 @@ def get_landmarks(city_name):
     """ Returns the scraped data from the landmarks table """
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
-    cur.execute("SELECT id FROM cities WHERE name =?",(city_name,))
+    cur.execute("SELECT id FROM cities WHERE name =?", (city_name,))
     city_id = cur.fetchone()[0]  # get the city id so could search using it
     cur.execute("SELECT landmark FROM landmarks WHERE city_id = ?", (city_id,))
     row = cur.fetchall()  # get all of the landmarks

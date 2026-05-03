@@ -88,7 +88,7 @@ def parse_population(soup):
     for i, row in enumerate(rows):
         text = row.get_text(strip=True)
         if "Population" in text and len(text) < 50:
-            for j in range(i+1, min(i+6, len(rows))):
+            for j in range(i + 1, min(i + 6, len(rows))):
                 next_text = rows[j].get_text(strip=True)
                 next_text = re.sub(r'\[.*?\]', '', next_text)
                 numbers = re.findall(r'[\d,]+', next_text)
@@ -126,11 +126,11 @@ def save_to_db(name, description, population, image_url, landmarks):
     cur.execute("SELECT id FROM cities WHERE name = ?", (name,))
     city_id = cur.fetchone()[0]
     # insert landmarks into the table
-    for l in landmarks:
+    for landmark in landmarks:
         cur.execute("""
             INSERT INTO landmarks (city_id, landmark)
             VALUES(?, ?)
-        """, (city_id, l))
+        """, (city_id, landmark))
 
     conn.commit()
     conn.close()

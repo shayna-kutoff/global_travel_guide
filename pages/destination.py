@@ -51,7 +51,7 @@ st.divider()
 # display weather forecast, in 2 columns
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader(f"5 Day Weather Forecast")
+    st.subheader("5 Day Weather Forecast")
     with st.spinner("Fetching weather data..."):
         weather_data = fetch_weather(city)
         forecast = parse_forecast(weather_data)
@@ -67,16 +67,18 @@ with col2:
     df = pd.DataFrame(daily_forecast)  # convert list into table to work with
     df['date'] = df['date'].str[:10]  # display the clean date data
     # create a line chart with x and y axis, title and labels
-    fig = px.line(df,x='date', y='temp', labels={'date':'Date', 'temp': 'Temperature(*F)'})
+    fig = px.line(df, x='date', y='temp', labels={'date': 'Date', 'temp': 'Temperature(*F)'})
     st.plotly_chart(fig)  # display the chart
 
 st.divider()
 
 # ai chatbot about destination
 with st.expander("💬 Ask our AI about " + city):
-    get_response(f"You are a travel advisor...",
-    "Ask me anything about " + city + "!",
-    chat_key="destination_messages")
+    get_response(
+        "You are a travel advisor...",
+        "Ask me anything about " + city + "!",
+        chat_key="destination_messages"
+    )
 
 st.markdown("---")
 st.markdown("Made with ❤️ | Global Travel Guide 2026")
